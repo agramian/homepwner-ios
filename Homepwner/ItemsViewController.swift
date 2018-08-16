@@ -26,9 +26,31 @@ class ItemsViewController: UITableViewController {
         let item = itemStore.allItems[indexPath.row]
         
         cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = "$\(item.valueInDollars)"
+        cell.detailTextLabel?.text = item.valueInDollars != nil ? "$\(item.valueInDollars!)" : ""
+        if item.valueInDollars != nil {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
+        }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return itemStore.allItems[indexPath.row].valueInDollars != nil ? 60 : 44
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "TableBackground")!)
+
+        /* Seems unnecessary, book may be out of date
+        // Get the height of the status bar
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+
+        let insets = UIEdgeInsets(top: statusBarHeight, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = insets
+        tableView.scrollIndicatorInsets = insets
+         */
     }
     
 }

@@ -16,6 +16,8 @@ class ItemStore {
         for _ in 0..<5 {
             createItem()
         }
+        let constantRow = Item(name: "No more items!", serialNumber: nil, valueInDollars: nil)
+        allItems.append(constantRow)
     }
     
     @discardableResult func createItem() -> Item {
