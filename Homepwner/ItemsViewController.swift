@@ -18,18 +18,23 @@ class ItemsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Get a new or recycled cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
         
         // Set the text on the cell with the description of the item
         // that is at the nth index of items, where n = row this cell
         // will appear in on the tableview
         let item = itemStore.allItems[indexPath.row]
         
-        cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = item.valueInDollars != nil ? "$\(item.valueInDollars!)" : ""
+        // Configure the cell with the Item
+        cell.nameLabel.text = item.name
+        cell.serialNumberLabel.text = item.serialNumber
         if indexPath.row == (itemStore.allItems.endIndex - 1) {
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
-            cell.detailTextLabel?.text = item.valueInDollars != nil ? "$\(item.valueInDollars!)" : ""
+            cell.nameLabel.font = UIFont.systemFont(ofSize: 20)
+            cell.valueLabel.text = ""
+            cell.valueLabel.textColor = UIColor.black
+        } else {
+            cell.valueLabel.text = "$\(item.valueInDollars!)"
+            cell.valueLabel.textColor = item.valueInDollars! < 50 ? UIColor.red : UIColor.green
         }
         
         return cell
@@ -87,7 +92,7 @@ class ItemsViewController: UITableViewController {
         super.viewDidLoad()
     
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "TableBackground")!)
-
+        
         /* Seems unnecessary, book may be out of date
         // Get the height of the status bar
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -96,6 +101,9 @@ class ItemsViewController: UITableViewController {
         tableView.contentInset = insets
         tableView.scrollIndicatorInsets = insets
          */
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 65
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
